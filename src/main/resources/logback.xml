@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOG_DIR" value="/var/log/avatar-api"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="RollingFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/psp-payment.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <fileNamePattern>
+                ${LOG_DIR}/%d{yyyy-MM-dd}/phk-%i.log
+            </fileNamePattern>
+            <maxFileSize>200MB</maxFileSize>
+            <maxHistory>50</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+<!--    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+<!--        <param name="Encoding" value="UTF-8"/>-->
+<!--        <remoteHost>logstash-srv</remoteHost>-->
+<!--        <port>5044</port>-->
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>-->
+<!--        <keepAliveDuration>5 minutes</keepAliveDuration>-->
+<!--        <writeTimeout>1 minute</writeTimeout>-->
+<!--    </appender>-->
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="RollingFile"/>
+<!--        <appender-ref ref="logstash"/>-->
+    </root>
+
+</configuration>

@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+  remote-config:
+    image: repo.sadad.co.ir/repository/baam-docker-registry/avatar-api:BUILD_NUMBER
+    container_name: avatar-api
+    hostname: avatar-api-srv
+    networks:
+      neo-baam:
+        aliases:
+          - avatar-api-srv
+    ports:
+      - 8516:8516
+      - 1519:1519
+    tty: true
+    extra_hosts:
+      - "cache:192.168.53.58"
+      - "cache1:192.168.53.58"
+      - "config-srv:192.168.53.73"
+    volumes:
+      - /var/log/avatar-api:/var/log/avatar-api
+      - /opt/configs/avatar-api:/opt/configs/avatar-api
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - JVM_OPTS=-Dfile.encoding=UTF8
+    working_dir: /
+    build: .
+    restart: always
+    command: [ "/usr/bin/java", "-jar", "/avatar-api-0.0.1-SNAPSHOT.jar" ]
+networks:
+  neo-baam:
+    driver: bridge
