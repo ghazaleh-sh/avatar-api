@@ -67,13 +67,13 @@ public class AvatarServiceImpl implements AvatarService {
     public Mono<String> getProfileImage(String ssn, String token) {
         return userAvatarPhotoRepository.findBySsn(ssn)
                 .map(res -> Base64.getEncoder().encodeToString(res.getImage().getData()))
-                .switchIfEmpty(profileServiceProvider
+                .switchIfEmpty(Mono.defer(() -> profileServiceProvider
                         .getProfile(token)
                         .map(profileResponseDto -> profileResponseDto
                                 .getResultSet()
                                 .getInnerResponse()
                                 .getCustomerPhoto()
-                                .getPhoto()));
+                                .getPhoto())));
 
     }
 
