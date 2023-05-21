@@ -2,6 +2,8 @@ package ir.co.sadad.avatarapi.providers.minio;
 
 
 import io.minio.errors.*;
+import org.springframework.core.io.InputStreamResource;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +22,5 @@ import java.security.NoSuchAlgorithmException;
 public interface FileStorageServiceProvider {
 
 
-    InputStream getFile(String bucketName,String fileName) throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException, NoSuchAlgorithmException, ServerException, InternalException, XmlParserException, ErrorResponseException;
-
+    Mono<InputStreamResource> getFile(String bucketName, String fileName);
 }

@@ -1,6 +1,7 @@
 package ir.co.sadad.avatarapi.common.exceptions.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import jakarta.validation.ConstraintViolation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,6 @@ import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
-import javax.validation.ConstraintViolation;
 import java.util.*;
 
 /**

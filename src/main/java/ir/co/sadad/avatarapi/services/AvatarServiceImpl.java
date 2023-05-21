@@ -1,7 +1,10 @@
 package ir.co.sadad.avatarapi.services;
 
+import ir.co.sadad.avatarapi.common.Converter;
+import ir.co.sadad.avatarapi.common.exceptions.GeneralException;
 import ir.co.sadad.avatarapi.dtos.ProfileDto;
 import ir.co.sadad.avatarapi.dtos.UserAvatarDto;
+import ir.co.sadad.avatarapi.dtos.UserAvatarSaveRequestDto;
 import ir.co.sadad.avatarapi.mappers.ProfileMapper;
 import ir.co.sadad.avatarapi.mappers.UserAvatarMapper;
 import ir.co.sadad.avatarapi.models.UserAvatarPhoto;
@@ -12,12 +15,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.Base64Utils;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.Base64;
+
 
 @Slf4j
 @Service
@@ -30,30 +35,57 @@ public class AvatarServiceImpl implements AvatarService {
     private final ProfileServiceProvider profileServiceProvider;
 
     private final ProfileMapper profileMapper;
-    private final UserAvatarMapper userAvatarMapper;
+
+    private final UserAvatarMapper mapper;
 
     @Override
-    public Mono<String> saveUserAvatar(UserAvatarDto userAvatar, MultipartFile image) throws IOException {
-
-        return userAvatarRepository.deleteBySsn(userAvatar.getSsn())
-                .then(userAvatarRepository.insert(userAvatarMapper.toModel(userAvatar)))
-                .then(userAvatarPhotoRepository.deleteBySsn(userAvatar.getSsn())
-                        .then(userAvatarPhotoRepository.insert(UserAvatarPhoto
-                                .builder()
-                                .ssn(userAvatar.getSsn())
-                                .image(new Binary(BsonBinarySubType.BINARY, image.getBytes()))
-                                .build()
-                        )).map(UserAvatarPhoto::getId));
+    public Mono<String> saveUserAvatar(UserAvatarDto userAvatar, FilePart image) {
+        return
+                userAvatarRepository.deleteBySsn(userAvatar.getSsn())
+                        .then(userAvatarPhotoRepository.deleteBySsn(userAvatar.getSsn())
+                                .then(userAvatarRepository.insert(mapper.toModel(userAvatar)))
+                                .then(DataBufferUtils.join(image.content())
+                                        .map(Converter::extractBytes)
+                                        .map(bytes -> {
+                                            return UserAvatarPhoto.builder()
+                                                    .ssn(userAvatar.getSsn())
+                                                    .image(new Binary(BsonBinarySubType.BINARY, bytes))
+                                                    .build();
+                                        }))
+                                .flatMap(userAvatarPhotoRepository::save)
+                                .flatMap(userAvatarPhoto -> Mono.just(userAvatarPhoto.getId())));
     }
 
     @Override
+    public Mono<String> saveUserAvatar(UserAvatarSaveRequestDto userAvatar) {
+        return
+                userAvatarRepository.deleteBySsn(userAvatar.getSsn())
+                        .then(userAvatarPhotoRepository.deleteBySsn(userAvatar.getSsn())
+                                .then(userAvatarRepository.insert(mapper.toModel(userAvatar)))
+                                .then(Mono.just(Base64Utils.decodeFromString(userAvatar.getImage()))
+                                        .map(bytes -> {
+                                            return UserAvatarPhoto.builder()
+                                                    .ssn(userAvatar.getSsn())
+                                                    .image(new Binary(BsonBinarySubType.BINARY, bytes))
+                                                    .build();
+                                        }))
+                                .flatMap(userAvatarPhotoRepository::save)
+                                .flatMap(userAvatarPhoto -> Mono.just(userAvatarPhoto.getId())));
+    }
+
+
+    @Override
     public Mono<UserAvatarDto> getUserAvatar(String ssn) {
-        return userAvatarRepository.findBySsn(ssn).map(userAvatarMapper::toDto);
+        return userAvatarRepository.findBySsn(ssn)
+                .switchIfEmpty(Mono.error(new GeneralException("AA.GA.NOT.FOUND.USER.001")))
+                .map(mapper::toDto);
     }
 
     @Override
     public Mono<Void> deleteUserAvatar(String ssn) {
-        return userAvatarRepository.deleteBySsn(ssn)
+        return userAvatarRepository.findBySsn(ssn)
+                .switchIfEmpty(Mono.error(new GeneralException("AA.GA.NOT.FOUND.USER.001")))
+                .then(userAvatarRepository.deleteBySsn(ssn))
                 .then(userAvatarPhotoRepository.deleteBySsn(ssn));
     }
 

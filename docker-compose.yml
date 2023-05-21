@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  remote-config:
+  avatar-api:
     image: repo.sadad.co.ir/repository/baam-docker-registry/avatar-api:BUILD_NUMBER
     container_name: avatar-api
     hostname: avatar-api-srv

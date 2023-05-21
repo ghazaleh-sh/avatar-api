@@ -8,5 +8,5 @@ import lombok.Data;
 @Data
 public class ResultSetDto {
 
-private InnerResponseDto innerResponse;
+    private InnerResponseDto innerResponse;
 }

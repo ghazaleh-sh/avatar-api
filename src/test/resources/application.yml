@@ -1,0 +1,107 @@
+###############################__AVATAR_API_QA__###############################
+
+v1API:  /resources
+server:
+  port: 8516
+  servlet:
+    context-path: /avatar-api
+  http2:
+    enabled: true
+
+###############################__DATABASE
+
+spring:
+  webflux:
+    base-path: /avatar-api
+  profiles:
+    include:
+      security
+  data:
+    mongodb:
+      authentication-database: ${db.database}
+      username: ${db.username}
+      password: ${db.password}
+      database: ${db.database}
+      port: ${db.port}
+      host: ${db.host}
+
+###############################__Configs
+file-storage:
+  base_url: ${minio.base_url}
+  access_key: ${minio.access_key}
+  secret_key: ${minio.secret_key}
+  buckets:
+    - "default-avatar"
+    - "hdpi"
+    - "xhdpi"
+    - "xxhdpi"
+    - "thumb"
+  port: ${minio.port}
+  secure: false
+
+
+###############################__Metrics_And_Monitoring
+management:
+  health.redis.enabled: false
+  info.git.mode: full
+  endpoint:
+    health.show-details: always
+    metrics.enabled: true
+    prometheus.enabled: true
+  endpoints:
+    enabled-by-default: true
+    jmx.exposure.exclude: '*'
+    web.exposure.include: '*'
+  metrics:
+    enable:
+      jvm: true
+      root: true
+    export.prometheus.enabled: true
+
+
+###############################__LOGS
+logging:
+  level:
+    root: ${log.level}
+    hibernate: ${log.level}
+    org.hibernate: ${log.level}
+    org:
+      hibernate:
+        SQL: ${log.level}
+        type.descriptor.sql.BasicBinder: ${log.level}
+      springframework:
+        boot.autoconfigure: ${log.level}
+        web: ${log.level}
+        web.reactive.function.client.ExchangeFunctions: ${log.level}
+      apache.http: ${log.level}
+      zaando.logbook: ${log.level}
+    net.guides: ${log.level}
+    reactor.netty.http.client.HttpClient: ${log.level}
+    io.swagger.models.parameters.AbstractSerializableParameter: ${log.level}
+    tomcat: ${log.level}
+
+###############################__SSO
+bmi.oauth2.excluded-urls: /avatar-api/swagger-ui/**:*,
+  /swagger-ui/**:*,
+  /avatar-api/api.html:*,
+  /api.html:*,
+  /avatar-api/v3/**:*,
+  /v3/**:*,
+  /h2/**:*,
+  /swagger-ui.html:*,
+  /webjars/**:*,
+  /v2/**:*,
+  /swagger-resources/**:*,
+  /actuator/**:*,
+  /trace/**:*,
+###############################__CONFIGS
+
+secretKeyLocation: /opt/security/avatar-api
+
+profile:
+  url: https://my.bmi.ir/portalserver/services/rest/profile/info
+
+springdoc:
+  swagger-ui:
+    path: /api.html
+

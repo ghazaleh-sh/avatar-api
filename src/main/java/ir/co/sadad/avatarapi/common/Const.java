@@ -8,4 +8,5 @@ public interface Const {
     String EMPTY_STRING = "";
     String SSN = "ssn";
     String TICKET = "ticket";
+    String DEFAULT_BUCKET = "default-avatar";
 }

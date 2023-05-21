@@ -1,7 +1,7 @@
 package ir.co.sadad.avatarapi.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import ir.co.sadad.avatarapi.enums.MaterialKey;
+import ir.co.sadad.avatarapi.common.enums.MaterialKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -12,6 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
+import org.springframework.data.mongodb.gridfs.ReactiveGridFsTemplate;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -29,7 +33,6 @@ public class AppConfig {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.addBasenames("classpath:message_exception");
         messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setUseCodeAsDefaultMessage(true);
 
         return messageSource;
     }
@@ -48,17 +51,32 @@ public class AppConfig {
     }
 
 
+
     @Bean
-    @Order(-2)
-    public ReactiveExceptionHandler reactiveExceptionHandler(WebProperties webProperties,
-                                                             ApplicationContext applicationContext,
-                                                             ServerCodecConfigurer configurer) {
-
-        ReactiveExceptionHandler exceptionHandler = new ReactiveExceptionHandler(
-                new DefaultErrorAttributes(), webProperties.getResources(), applicationContext, messageSource());
-        exceptionHandler.setMessageWriters(configurer.getWriters());
-        exceptionHandler.setMessageReaders(configurer.getReaders());
-        return exceptionHandler;
-
+    public ReactiveGridFsTemplate reactiveGridFsTemplate(
+            ReactiveMongoDatabaseFactory databaseFactory,
+            MappingMongoConverter mongoConverter) {
+        return new ReactiveGridFsTemplate(databaseFactory, mongoConverter);
     }
+
+
+//    @Bean
+//    public ValidatingMongoEventListener validatingMongoEventListener() {
+//        return new ValidatingMongoEventListener(getValidator());
+//    }
+
+
+//    @Bean
+//    @Order(-2)
+//    public ReactiveExceptionHandler reactiveExceptionHandler(WebProperties webProperties,
+//                                                             ApplicationContext applicationContext,
+//                                                             ServerCodecConfigurer configurer) {
+//
+//        ReactiveExceptionHandler exceptionHandler = new ReactiveExceptionHandler(
+//                new DefaultErrorAttributes(), webProperties.getResources(), applicationContext, messageSource());
+//        exceptionHandler.setMessageWriters(configurer.getWriters());
+//        exceptionHandler.setMessageReaders(configurer.getReaders());
+//        return exceptionHandler;
+//
+//    }
 }

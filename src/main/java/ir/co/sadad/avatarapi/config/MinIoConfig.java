@@ -5,7 +5,9 @@ import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.errors.*;
+import ir.co.sadad.avatarapi.repositories.BucketRepository;
 import okhttp3.OkHttpClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -25,13 +28,15 @@ public class MinIoConfig {
     private String accessKey;
     @Value("${file-storage.secret_key}")
     private String secretKey;
-    @Value("${file-storage.bucket}")
-    private String bucket;
+
     @Value("${file-storage.port}")
     private int port;
     @Value("${file-storage.secure}")
     private boolean secure;
 
+
+    @Autowired
+private BucketRepository bucketRepository;
 
     @Bean
     public MinioClient minioClient() throws IOException,
@@ -56,17 +61,12 @@ public class MinIoConfig {
                 .endpoint(minIoBaseUrl, port, secure)
                 .build();
 
-
-        boolean isExist = build
-                .bucketExists(BucketExistsArgs.builder().bucket(bucket).build());
-        if (isExist) {
-            System.out.println("Bucket already exists.");
-        } else {
-            build.makeBucket(MakeBucketArgs.builder()
-                    .bucket(bucket)
-                    .build());
+        for (String bucket:bucketRepository.getBuckets()) {
+            if (!build.bucketExists(BucketExistsArgs.builder().bucket(bucket).build()))
+                build.makeBucket(MakeBucketArgs.builder()
+                        .bucket(bucket)
+                        .build());
         }
-
         return build;
 
     }

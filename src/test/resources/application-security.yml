@@ -1,0 +1,21 @@
+###############################__AVATAR_API_security__###############################
+
+db:
+  username: anaderi
+#  username: gshahrokhabadi
+  password: BWTmozQyhxTlbaNxL2F5
+#  password: zDeAKpNCUke1nAuZA0F4
+  database: hamrahbaamDB
+  port: 27017
+  host: 172.30.43.94
+  url: mongodb://172.30.43.94:27017/hamrahbaamDB
+
+log:
+  level: info
+
+
+minio:
+  base_url: "http://192.168.53.73:9002"
+  port: 9002
+  access_key: "baam"
+  secret_key: "P@ssw0rd"

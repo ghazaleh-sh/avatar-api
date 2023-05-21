@@ -2,7 +2,8 @@ package ir.co.sadad.avatarapi.services;
 
 import ir.co.sadad.avatarapi.dtos.ProfileDto;
 import ir.co.sadad.avatarapi.dtos.UserAvatarDto;
-import org.springframework.web.multipart.MultipartFile;
+import ir.co.sadad.avatarapi.dtos.UserAvatarSaveRequestDto;
+import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -23,7 +24,18 @@ public interface AvatarService {
      * @param image      photo of user
      * @return id of stored user avatar
      */
-    Mono<String> saveUserAvatar(UserAvatarDto userAvatar, MultipartFile image) throws IOException;
+    Mono<String> saveUserAvatar(UserAvatarDto userAvatar, FilePart image) throws IOException;
+
+    /**
+     * save user avatar with base 64 image .
+     * <pre>
+     *     ATTENTION : if user has avatar , must first delete user avatar then create new one
+     * </pre>
+     *
+     * @param userAvatar user avatar formula with image
+     * @return id of stored user avatar
+     */
+    Mono<String> saveUserAvatar(UserAvatarSaveRequestDto userAvatar);
 
 
     /**
