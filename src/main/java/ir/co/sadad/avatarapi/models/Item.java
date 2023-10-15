@@ -1,5 +1,6 @@
 package ir.co.sadad.avatarapi.models;
 
+import ir.co.sadad.avatarapi.common.enums.MaterialKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,21 +23,15 @@ public class Item {
     /**
      * name of each first material(shirt, head, lip, nose ,...)
      */
-    private String key;
+    private MaterialKey key;
 
     /**
      * order of each key
      */
-    private String order;
+    private Integer order;
 
     /**
      * name of each key(avatar_shirt_1.png)
      */
-    private String thumbnail;
-
-    /**
-     * name of sticker in xxhdpi size
-     */
-    private StickerBucket sticker;
-
+    private String fileName;
 }

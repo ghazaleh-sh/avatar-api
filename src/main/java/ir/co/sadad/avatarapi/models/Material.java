@@ -1,5 +1,6 @@
 package ir.co.sadad.avatarapi.models;
 
+import ir.co.sadad.avatarapi.common.enums.MaterialKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,17 +28,12 @@ public class Material {
     /**
      * name of each first material(shirt, head, lip, nose ,...)
      */
-    private String key;
+    private MaterialKey key;
 
     /**
      * order of each key
      */
-    private String order;
-
-    /**
-     * name of each key(avatar_shirt_1.png)
-     */
-    private String thumbnail;
+    private Integer order;
 
     /**
      * true of false
@@ -47,7 +43,7 @@ public class Material {
     /**
      * priority this material for making an avatar
      */
-    private String priority;
+    private Integer priority;
 
     /**
      * items in each bucket which related to this material

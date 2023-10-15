@@ -2,17 +2,13 @@ package ir.co.sadad.avatarapi.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import ir.co.sadad.avatarapi.common.enums.MaterialKey;
-import ir.co.sadad.avatarapi.models.Item;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
 @Data
-@Schema(title = "خروجی سرویس دریافت متریال ها")
-public class MaterialsResponseDto {
-    @Schema(title = "شناسه متریال")
-    private String id;
+@Schema(title = "ورودی سرویس ذخیره متریال ها")
+public class MaterialRequestDto {
 
     @Schema(title = "کلید متریال (بینی ، دهان ، چشم و...)")
     private MaterialKey key;
@@ -28,4 +24,5 @@ public class MaterialsResponseDto {
 
     @Schema(title = "لیست آیتم های هر متریال")
     private List<ItemDto> items;
+
 }

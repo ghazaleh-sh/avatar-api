@@ -1,7 +1,10 @@
 package ir.co.sadad.avatarapi.services;
 
-import ir.co.sadad.avatarapi.models.DefaultAvatar;
-import ir.co.sadad.avatarapi.models.Material;
+import ir.co.sadad.avatarapi.dtos.DefaultAvatarRequestDto;
+import ir.co.sadad.avatarapi.dtos.DefaultAvatarResponseDto;
+import ir.co.sadad.avatarapi.dtos.MaterialRequestDto;
+import ir.co.sadad.avatarapi.dtos.MaterialsResponseDto;
+import ir.co.sadad.avatarapi.mappers.MaterialMapper;
 import ir.co.sadad.avatarapi.providers.minio.FileStorageServiceProvider;
 import ir.co.sadad.avatarapi.repositories.DefaultAvatarRepository;
 import ir.co.sadad.avatarapi.repositories.MaterialRepository;
@@ -23,9 +26,16 @@ public class MaterialServiceImpl implements MaterialService {
     private final MaterialRepository materialRepository;
     private final DefaultAvatarRepository defaultAvatarRepository;
 
+    private final MaterialMapper mapper;
+
     @Override
-    public Flux<Material> getAllMaterial() {
-        return materialRepository.findAll();
+    public Mono<Boolean> saveMaterials(MaterialRequestDto materialRequestDtoFlux) {
+        return materialRepository.insert(mapper.toModel(materialRequestDtoFlux)).then(Mono.just(Boolean.TRUE));
+    }
+
+    @Override
+    public Flux<MaterialsResponseDto> getAllMaterial() {
+        return materialRepository.findAll().map(mapper::toDto).switchIfEmpty(Flux.empty());
     }
 
     @Override
@@ -34,8 +44,13 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public Flux<DefaultAvatar> getDefaultAvatars() {
-        return defaultAvatarRepository.findAll();
+    public Mono<Boolean> saveDefaultAvatars(DefaultAvatarRequestDto defaultAvatarRequestDtoFlux) {
+        return defaultAvatarRepository.insert(mapper.toDefaultAvatarModel(defaultAvatarRequestDtoFlux)).then(Mono.just(Boolean.TRUE));
+    }
+
+    @Override
+    public Flux<DefaultAvatarResponseDto> getDefaultAvatars() {
+        return defaultAvatarRepository.findAll().map(mapper::toDefaultAvatarDto).switchIfEmpty(Flux.empty());
     }
 
     @Override

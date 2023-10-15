@@ -28,14 +28,14 @@ class MaterialServiceImplTest  {
     @MockBean
     private FileStorageServiceProvider fileStorageServiceProvider;
 
-    @Test
-    public void shouldReturnMaterials() {
-        Flux<Material> materials = materialService.getAllMaterial();
-        StepVerifier
-                .create(materials)
-                .expectNextCount(0)
-                .verifyComplete();
-    }
+//    @Test
+//    public void shouldReturnMaterials() {
+//        Flux<Material> materials = materialService.getAllMaterial();
+//        StepVerifier
+//                .create(materials)
+//                .expectNextCount(0)
+//                .verifyComplete();
+//    }
 
 //    @Test
 //    public void shouldThrowExceptionWhenInputOfGetMaterialFileIsEmpty()

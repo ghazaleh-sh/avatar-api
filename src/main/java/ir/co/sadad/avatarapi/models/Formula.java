@@ -28,15 +28,10 @@ public class Formula {
     /**
      * priority of each part of formula for creating user avatar
      */
-    private String priority;
+    private Integer priority;
 
     /**
      * name of each key ("avatar_eye_1")
      */
-    private String thumbnail;
-
-    /**
-     * name of sticker that user selected for creating its avatar ("avatar_eye_1")
-     */
-    private String sticker;
+    private String fileName;
 }

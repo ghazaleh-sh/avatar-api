@@ -13,15 +13,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FormulaDto {
 
+    private String id;
+
     @Schema(title = "کلید جزئیات آواتار")
     private MaterialKey key;
 
     @Schema(title = "اولویت جزئیات")
-    private String priority;
+    private Integer priority;
 
-    @Schema(title = "نام تامبنیل جزئیات")
-    private String thumbnail;
 
     @Schema(title = "نام جزئیات")
-    private String sticker;
+    private String fileName;
+
 }

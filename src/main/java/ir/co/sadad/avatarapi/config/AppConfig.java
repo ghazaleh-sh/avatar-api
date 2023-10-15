@@ -51,32 +51,4 @@ public class AppConfig {
     }
 
 
-
-    @Bean
-    public ReactiveGridFsTemplate reactiveGridFsTemplate(
-            ReactiveMongoDatabaseFactory databaseFactory,
-            MappingMongoConverter mongoConverter) {
-        return new ReactiveGridFsTemplate(databaseFactory, mongoConverter);
-    }
-
-
-//    @Bean
-//    public ValidatingMongoEventListener validatingMongoEventListener() {
-//        return new ValidatingMongoEventListener(getValidator());
-//    }
-
-
-//    @Bean
-//    @Order(-2)
-//    public ReactiveExceptionHandler reactiveExceptionHandler(WebProperties webProperties,
-//                                                             ApplicationContext applicationContext,
-//                                                             ServerCodecConfigurer configurer) {
-//
-//        ReactiveExceptionHandler exceptionHandler = new ReactiveExceptionHandler(
-//                new DefaultErrorAttributes(), webProperties.getResources(), applicationContext, messageSource());
-//        exceptionHandler.setMessageWriters(configurer.getWriters());
-//        exceptionHandler.setMessageReaders(configurer.getReaders());
-//        return exceptionHandler;
-//
-//    }
 }

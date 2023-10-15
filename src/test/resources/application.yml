@@ -99,7 +99,7 @@ bmi.oauth2.excluded-urls: /avatar-api/swagger-ui/**:*,
 secretKeyLocation: /opt/security/avatar-api
 
 profile:
-  url: https://my.bmi.ir/portalserver/services/rest/profile/info
+  url: http://localhost:7071/info
 
 springdoc:
   swagger-ui:

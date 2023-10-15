@@ -21,16 +21,14 @@ class UserAvatarMapperTest {
     public void shouldConvertToDto() {
         Formula givenFormula = new Formula();
         givenFormula.setKey(MaterialKey.HAT);
-        givenFormula.setSticker("sticker");
-        givenFormula.setThumbnail("thumbnail");
+        givenFormula.setFileName("fileName");
         givenFormula.setId("123");
-        givenFormula.setPriority("1");
+        givenFormula.setPriority(1);
         Formula givenSecondFormula = new Formula();
         givenSecondFormula.setKey(MaterialKey.EYEBROW);
-        givenSecondFormula.setSticker("second_sticker");
-        givenSecondFormula.setThumbnail("second_thumbnail");
+        givenSecondFormula.setFileName("second_FileName");
         givenSecondFormula.setId("456");
-        givenSecondFormula.setPriority("1");
+        givenSecondFormula.setPriority(1);
         List<Formula> givenFormulaList = new ArrayList<>();
         givenFormulaList.add(givenFormula);
         givenFormulaList.add(givenSecondFormula);
@@ -55,14 +53,12 @@ class UserAvatarMapperTest {
     public void shouldConvertToModel() {
         FormulaDto givenFormula = new FormulaDto();
         givenFormula.setKey(MaterialKey.HAT);
-        givenFormula.setSticker("sticker");
-        givenFormula.setThumbnail("thumbnail");
-        givenFormula.setPriority("1");
+        givenFormula.setFileName("thumbnail");
+        givenFormula.setPriority(1);
         FormulaDto givenSecondFormula = new FormulaDto();
         givenSecondFormula.setKey(MaterialKey.EYEBROW);
-        givenSecondFormula.setSticker("second_sticker");
-        givenSecondFormula.setThumbnail("second_thumbnail");
-        givenSecondFormula.setPriority("1");
+        givenSecondFormula.setFileName("second_thumbnail");
+        givenSecondFormula.setPriority(1);
         List<FormulaDto> givenFormulaList = new ArrayList<>();
         givenFormulaList.add(givenFormula);
         givenFormulaList.add(givenSecondFormula);
@@ -79,14 +75,12 @@ public void shouldConvertToModelForBase64Images()
 {
     FormulaDto givenFormula = new FormulaDto();
     givenFormula.setKey(MaterialKey.HAT);
-    givenFormula.setSticker("sticker");
-    givenFormula.setThumbnail("thumbnail");
-    givenFormula.setPriority("1");
+    givenFormula.setFileName("thumbnail");
+    givenFormula.setPriority(1);
     FormulaDto givenSecondFormula = new FormulaDto();
     givenSecondFormula.setKey(MaterialKey.EYEBROW);
-    givenSecondFormula.setSticker("second_sticker");
-    givenSecondFormula.setThumbnail("second_thumbnail");
-    givenSecondFormula.setPriority("1");
+    givenSecondFormula.setFileName("second_thumbnail");
+    givenSecondFormula.setPriority(1);
     List<FormulaDto> givenFormulaList = new ArrayList<>();
     givenFormulaList.add(givenFormula);
     givenFormulaList.add(givenSecondFormula);

@@ -3,11 +3,7 @@ package ir.co.sadad.avatarapi.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import ir.co.sadad.avatarapi.dtos.ProfileDto;
-import ir.co.sadad.avatarapi.dtos.UserAvatarDto;
-import ir.co.sadad.avatarapi.dtos.UserAvatarSaveRequestDto;
-import ir.co.sadad.avatarapi.models.DefaultAvatar;
-import ir.co.sadad.avatarapi.models.Material;
+import ir.co.sadad.avatarapi.dtos.*;
 import ir.co.sadad.avatarapi.services.AvatarServiceImpl;
 import ir.co.sadad.avatarapi.services.MaterialService;
 import jakarta.validation.Valid;
@@ -58,7 +54,7 @@ public class AvatarControllers {
 
     @Operation(summary = "سرویس ذخیره آواتار برای عکس های بیس 64", description = "سرویس ذخیره آواتار کاربر -  این سرویس جهت ذخیره عکس ها به صورت بیس 64 به کار میرود")
     @ApiResponse(responseCode = "200")
-    @PostMapping(value = "/save_user_avatar", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/save_user_avatar_base_64", consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<String> saveUserAvatar(@Valid @RequestBody UserAvatarSaveRequestDto request) {
         return avatarService.saveUserAvatar(request);
@@ -68,19 +64,38 @@ public class AvatarControllers {
     @Operation(summary = "سرویس حذف یوزر آواتار", description = "سرویس حذف یوزر آواتار")
     @ApiResponse(responseCode = "200")
     @DeleteMapping("/delete_user_avatar")
-    public Mono<Void> deleteUserAvatar(@RequestHeader(SSN) String ssn) {
-        return avatarService.deleteUserAvatar(ssn);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Mono<Void>> deleteUserAvatar(@RequestHeader(SSN) String ssn) {
+        return new ResponseEntity<>(avatarService.deleteUserAvatar(ssn), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "سرویس ذخیره متریال ها", description = "سرویس برای ذخیره متریال ها")
+    @ApiResponse(responseCode = "200")
+    @PostMapping(value = "/save_material", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Mono<Boolean>> saveMaterial(@Valid @RequestBody MaterialRequestDto request) {
+        return new ResponseEntity<>(materialService.saveMaterials(request), HttpStatus.CREATED);
     }
 
     @Operation(summary = "سرویس دریافت لیست متریال ها", description = "سرویسی که لیست متریال ها را ارسال میکند")
     @GetMapping("/get_materials")
-    Flux<Material> getAllMaterials() {
+    Flux<MaterialsResponseDto> getAllMaterials() {
         return materialService.getAllMaterial();
+    }
+
+
+    @Operation(summary = "سرویس ذخیره آواتار پیش فرض", description = "سرویس برای ذخیره آوتار خای پیش فرض")
+    @ApiResponse(responseCode = "200")
+    @PostMapping(value = "/save_default_avatar", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Mono<Boolean>> saveDefaultAvatar(@Valid @RequestBody DefaultAvatarRequestDto request) {
+        return new ResponseEntity<>(materialService.saveDefaultAvatars(request), HttpStatus.CREATED);
     }
 
     @Operation(summary = "سرویس دریافت فرمول ساخت آواتار های پیشفرض", description = "سرویس دریفات فرمول ساخت آواتار پیشفرض که باید برای کاربر نمایش داده شود")
     @GetMapping("/get_default_avatars")
-    Flux<DefaultAvatar> getDefaultAvatar() {
+    Flux<DefaultAvatarResponseDto> getDefaultAvatar() {
         return materialService.getDefaultAvatars();
     }
 
