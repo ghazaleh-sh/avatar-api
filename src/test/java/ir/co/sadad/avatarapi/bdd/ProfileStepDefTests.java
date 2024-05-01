@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -89,7 +90,7 @@ public class ProfileStepDefTests extends SpringIntegrationTest {
 
     @Then("service will return profile of user with ssn {string}")
     public void serviceWillReturnProfileOfUserWithSsn(String arg0) {
-        assertThat(latestResponse.expectBody(ProfileDto.class).returnResult().getResponseBody().getResultSet().getInnerResponse().getSsn(), is(arg0));
+        assertThat(Objects.requireNonNull(latestResponse.expectBody(ProfileDto.class).returnResult().getResponseBody()).getSsn(), is(arg0));
         wireMockServer.stop();
     }
 }

@@ -26,7 +26,7 @@ public class UserAvatar extends DefaultAvatar {
     private String ssn;
 
     @Builder
-    public UserAvatar(String id, String name, List<Formula> stickers, String ssn) {
+    public UserAvatar(String id, String name, List<Sticker> stickers, String ssn) {
         super(id, name, stickers);
         this.ssn = ssn;
     }

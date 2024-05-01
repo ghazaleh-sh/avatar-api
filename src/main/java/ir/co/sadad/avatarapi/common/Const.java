@@ -9,4 +9,7 @@ public interface Const {
     String SSN = "ssn";
     String TICKET = "ticket";
     String DEFAULT_BUCKET = "default-avatar";
+    String FULL_SIZE_MATERIAL_BUCKET="full-size-avatar";
+
+    String PWA_MATERIAL_FILE_NAME="pwaMaterialFile.png";
 }

@@ -1,7 +1,6 @@
 package ir.co.sadad.avatarapi.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -33,5 +32,5 @@ public class DefaultAvatar {
     /**
      * includes different part of an avatar which user has created
      */
-    private List<Formula> stickers;
+    private List<Sticker> stickers;
 }

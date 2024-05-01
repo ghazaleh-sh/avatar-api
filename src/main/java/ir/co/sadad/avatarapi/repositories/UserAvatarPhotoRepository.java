@@ -14,4 +14,6 @@ public interface UserAvatarPhotoRepository extends ReactiveMongoRepository<UserA
     Mono<UserAvatarPhoto> findBySsn(String ssn);
 
     Mono<Void> deleteBySsn(String ssn);
+
+    Mono<Void> deleteBySsn(Mono<String> ssn);
 }

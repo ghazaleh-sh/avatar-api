@@ -1,14 +1,9 @@
 package ir.co.sadad.avatarapi.providers.minio;
 
 
-import io.minio.errors.*;
-import org.springframework.core.io.InputStreamResource;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * provide for storage services.
@@ -22,5 +17,16 @@ import java.security.NoSuchAlgorithmException;
 public interface FileStorageServiceProvider {
 
 
-    Mono<InputStreamResource> getFile(String bucketName, String fileName);
+    Mono<byte[]> getFile(String bucketName, String fileName);
+
+    Mono<byte[]> getPanelFile(String bucketName, String fileName);
+
+    Mono<String> uploadFile(String bucketName,
+                            String fileName,
+                            InputStream input,
+                            int size);
+
+
+    Mono<Void> deleteFile(String bucketName, String fileNme);
+
 }

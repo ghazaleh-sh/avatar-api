@@ -1,7 +1,6 @@
 package ir.co.sadad.avatarapi.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import ir.co.sadad.avatarapi.models.Formula;
 import lombok.Data;
 
 import java.util.List;
@@ -13,10 +12,10 @@ public class DefaultAvatarResponseDto {
     @Schema(title = "شناسه")
     private String id;
 
-    @Schema(title = "نام")
+    @Schema(title = "نام فایل دیفالت آواتار")
     private String name;
 
     @Schema(title = "لیست فرمول ساخت ")
-    private List<FormulaDto> stickers;
+    private List<StickerDto> stickers;
 
 }

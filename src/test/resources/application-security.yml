@@ -19,3 +19,8 @@ minio:
   port: 9002
   access_key: "baam"
   secret_key: "P@ssw0rd"
+
+redis:
+  master_name: "mymaster"
+  password: "%Ba@aM^P@y%"
+  nodes: 192.168.53.73:26379

@@ -1,14 +1,13 @@
 package ir.co.sadad.avatarapi.bdd;
 
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import ir.co.sadad.avatarapi.common.enums.MaterialKey;
-import ir.co.sadad.avatarapi.dtos.ItemDto;
 import ir.co.sadad.avatarapi.dtos.MaterialRequestDto;
 import ir.co.sadad.avatarapi.dtos.MaterialsResponseDto;
+import ir.co.sadad.avatarapi.dtos.StickerDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 
@@ -25,18 +24,18 @@ public class MaterialStepDefinitionTests extends SpringIntegrationTest {
     @Given("^the client create materials$")
     public void theClientCreateMaterials() {
 
-        ItemDto item = new ItemDto();
-        item.setKey(MaterialKey.EYEGALSS);
-        item.setOrder(1);
+        StickerDto item = new StickerDto();
+        item.setKey(MaterialKey.EYEGLASS);
+        item.setPriority(1);
         item.setFileName("fileName");
-        List<ItemDto> itemList = new ArrayList<>();
+        List<StickerDto> itemList = new ArrayList<>();
         itemList.add(item);
         given = new MaterialRequestDto();
-        given.setOrder(1);
+        given.setPriority(1);
         given.setPriority(1);
         given.setItems(itemList);
-        given.setIsRequire("true");
-        given.setKey(MaterialKey.EYEGALSS);
+        given.setIsRequire(true);
+        given.setKey(MaterialKey.EYEGLASS);
     }
 
     @When("^the client call save material service$")
@@ -64,9 +63,11 @@ public class MaterialStepDefinitionTests extends SpringIntegrationTest {
                 .exchange();
 
     }
+
     @And("^Size of items in Material is (.+)$")
     public void sizeOfItemsInMaterialIs(Integer itemSize) {
-        assertThat(latestResponse.expectBody(new ParameterizedTypeReference<List<MaterialsResponseDto>>(){} ).returnResult().getResponseBody().get(0).getItems().size(), is(itemSize));
+        assertThat(latestResponse.expectBody(new ParameterizedTypeReference<List<MaterialsResponseDto>>() {
+        }).returnResult().getResponseBody().get(0).getItems().size(), is(itemSize));
     }
 
 }

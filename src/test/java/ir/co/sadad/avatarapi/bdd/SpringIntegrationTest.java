@@ -5,7 +5,6 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import io.cucumber.spring.CucumberContextConfiguration;
 import ir.co.sadad.avatarapi.AvatarApiApplication;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -23,8 +22,6 @@ import java.time.Duration;
 @Testcontainers
 public class SpringIntegrationTest {
     protected WebTestClient webTestClient;
-
-    protected TokenDto clientToken;
     protected WebTestClient.ResponseSpec latestResponse;
     protected WireMockServer wireMockServer;
     @Container
@@ -50,7 +47,6 @@ public class SpringIntegrationTest {
         log.info("-------------- Spring Context Initialized For Executing Cucumber Tests --------------");
 
 
-
 //        WebClient client = WebClient.builder()
 //                .baseUrl("http://185.135.30.10:9443")
 //                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -64,7 +60,6 @@ public class SpringIntegrationTest {
 //                .retrieve()
 //                .bodyToFlux(TokenDto.class).blockLast();
     }
-
 
 
 }

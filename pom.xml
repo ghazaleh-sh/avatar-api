@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.2</version>
+        <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ir.co.sadad</groupId>
     <artifactId>avatar-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.14-SNAPSHOT</version>
     <name>avatar-api</name>
     <description>Avatar api for mobile ecosystem</description>
 
@@ -19,7 +19,7 @@
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
         <open.api.version>1.4.8</open.api.version>
         <javax.servlet.version>1.2</javax.servlet.version>
-        <spring-cloud.version>2022.0.0</spring-cloud.version>
+        <spring-cloud.version>2023.0.0</spring-cloud.version>
         <hazelcast.version>3.11.4</hazelcast.version>
         <log4j2.version>2.16.0</log4j2.version>
         <cucumber.version>7.12.0</cucumber.version>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <version>4.0.1</version>
+            <version>4.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -60,6 +60,18 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
+
+        <!--		Redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+        </dependency>
+        <!--		Aspect-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.19</version>
+        </dependency>
 
         <!--		Actuator(monitoring)-->
         <dependency>

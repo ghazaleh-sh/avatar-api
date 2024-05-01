@@ -19,5 +19,5 @@ public class UserAvatarDto {
     private String ssn;
 
     @Schema(title = "فرمول ساخت آواتار کاربر")
-    private List<FormulaDto> stickers;
+    private List<StickerDto> stickers;
 }

@@ -3,11 +3,12 @@ package ir.co.sadad.avatarapi.models;
 import ir.co.sadad.avatarapi.common.enums.MaterialKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * model of Materials
@@ -19,7 +20,6 @@ import java.util.List;
 @Document
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class Material {
 
     @Id
@@ -27,18 +27,21 @@ public class Material {
 
     /**
      * name of each first material(shirt, head, lip, nose ,...)
+     * <pre>
+     *     data must be in UPPER CASE .
+     * </pre>
      */
     private MaterialKey key;
 
     /**
-     * order of each key
+     * name of a file that display in client as Thumbnail
      */
-    private Integer order;
+    private String fileName;
 
     /**
      * true of false
      */
-    private String isRequire;
+    private Boolean isRequire;
 
     /**
      * priority this material for making an avatar
@@ -46,8 +49,35 @@ public class Material {
     private Integer priority;
 
     /**
+     * where to show this category
+     */
+    private Integer index;
+
+    /**
      * items in each bucket which related to this material
      */
-    private List<Item> items;
+    private List<Sticker> items;
 
+
+    public Material() {
+
+    }
+
+    public Material(MaterialKey materialKey) {
+        this.key = materialKey;
+    }
+
+    /**
+     * method for append new Item in endOf list
+     *
+     * @param newItems new items that must append
+     */
+    public void appendItem(List<Sticker> newItems) {
+        if (this.items == null || this.items.size() == 0)
+            setItems(newItems);
+        else
+            this.items.addAll(this.items.size() - 1, newItems);
+
+        this.items = this.getItems().stream().sorted(Comparator.comparingInt(k -> k.getKey().ordinal())).collect(Collectors.toList());
+    }
 }

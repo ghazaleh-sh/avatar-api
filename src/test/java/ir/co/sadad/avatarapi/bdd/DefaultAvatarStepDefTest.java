@@ -24,17 +24,17 @@ public class DefaultAvatarStepDefTest extends SpringIntegrationTest {
 
         given = new DefaultAvatarRequestDto();
         given.setName("name");
-        FormulaDto formula1 = new FormulaDto();
+        StickerDto formula1 = new StickerDto();
         formula1.setFileName("fileName1");
         formula1.setKey(MaterialKey.EYE);
         formula1.setId("1234");
         formula1.setPriority(1);
-        FormulaDto formula2 = new FormulaDto();
+        StickerDto formula2 = new StickerDto();
         formula2.setFileName("fileName2");
         formula2.setKey(MaterialKey.EYEBROW);
         formula2.setId("1235");
         formula2.setPriority(2);
-        List<FormulaDto> stickers = new ArrayList<>();
+        List<StickerDto> stickers = new ArrayList<>();
         stickers.add(formula1);
         stickers.add(formula2);
         given.setStickers(stickers);

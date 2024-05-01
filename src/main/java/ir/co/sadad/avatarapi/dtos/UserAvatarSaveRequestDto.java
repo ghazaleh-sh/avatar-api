@@ -19,7 +19,7 @@ public class UserAvatarSaveRequestDto
     private String ssn;
 
     @Schema(title = "فرمول ساخت آواتار کاربر")
-    private List<FormulaDto> stickers;
+    private List<StickerDto> stickers;
 
     @Schema(title = "عکس کاربر")
     @NotBlank(message = "AA.SA.V.IR.005")

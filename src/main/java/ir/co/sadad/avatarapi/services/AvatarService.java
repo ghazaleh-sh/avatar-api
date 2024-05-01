@@ -4,6 +4,7 @@ import ir.co.sadad.avatarapi.dtos.ProfileDto;
 import ir.co.sadad.avatarapi.dtos.UserAvatarDto;
 import ir.co.sadad.avatarapi.dtos.UserAvatarSaveRequestDto;
 import org.springframework.http.codec.multipart.FilePart;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -73,8 +74,10 @@ public interface AvatarService {
      * </pre>
      *
      * @param ssn
-     * @param token authToken
+     * @param token    authToken
+     * @param fileName
+     * @param exchange
      * @return inputStream
      */
-    Mono<String> getProfileImage(String ssn, String token);
+    Mono<Void> getProfileImage(String ssn, String token,String fileName, ServerWebExchange exchange);
 }

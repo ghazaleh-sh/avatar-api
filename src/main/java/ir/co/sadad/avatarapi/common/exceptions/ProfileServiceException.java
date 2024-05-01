@@ -2,7 +2,7 @@ package ir.co.sadad.avatarapi.common.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class ProfileServiceException extends BaseException {
+public final class ProfileServiceException extends BaseException {
 
     public ProfileServiceException() {
         this.code = "AA.PROFILE.SERVICE";

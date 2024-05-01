@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
 
 @RunWith(Cucumber.class)
-@ActiveProfiles(profiles = "qa")
+@ActiveProfiles(profiles = "test")
 @CucumberOptions(
         plugin = {"pretty", "json:target/cucumber.json"},
         features = "classpath:features"

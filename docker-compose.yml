@@ -9,8 +9,8 @@ services:
         aliases:
           - avatar-api-srv
     ports:
-      - 8516:8516
-      - 1519:1519
+      - "8516:8516"
+      - "1519:1519"
     tty: true
     extra_hosts:
       - "cache:192.168.53.58"
@@ -25,7 +25,7 @@ services:
     working_dir: /
     build: .
     restart: always
-    command: [ "/usr/bin/java", "-jar", "/avatar-api-0.0.1-SNAPSHOT.jar" ]
+    command: [ "/usr/bin/java", "-jar", "/avatar-api-1.0.14-SNAPSHOT.jar" ]
 networks:
   neo-baam:
     driver: bridge

@@ -22,28 +22,28 @@ public class ApiError {
     /**
      * code of exception - 400 ~ 500
      */
-    private HttpStatus status;
+    private final HttpStatus status;
 
     /**
      * when error occurred
      */
 //    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", shape = JsonFormat.Shape.NUMBER, timezone = "Asia/Tehran")
-    private Long timestamp;
+    private final Long timestamp;
 
     /**
      * code of exception
      */
-    private String code;
+    private final String code;
 
     /**
      * message of exception
      */
-    private String message;
+    private final String message;
 
     /**
      * translated message
      */
-    private String localizedMessage;
+    private final String localizedMessage;
 
     /**
      * list of sub errors
@@ -59,7 +59,7 @@ public class ApiError {
     /**
      * extra date
      */
-    private String extraData;
+    private final String extraData;
 
     @Builder
     public ApiError(HttpStatus status,

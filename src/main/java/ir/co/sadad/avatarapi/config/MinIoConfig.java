@@ -36,7 +36,7 @@ public class MinIoConfig {
 
 
     @Autowired
-private BucketRepository bucketRepository;
+    private BucketRepository bucketRepository;
 
     @Bean
     public MinioClient minioClient() throws IOException,
@@ -61,7 +61,7 @@ private BucketRepository bucketRepository;
                 .endpoint(minIoBaseUrl, port, secure)
                 .build();
 
-        for (String bucket:bucketRepository.getBuckets()) {
+        for (String bucket : bucketRepository.getBuckets()) {
             if (!build.bucketExists(BucketExistsArgs.builder().bucket(bucket).build()))
                 build.makeBucket(MakeBucketArgs.builder()
                         .bucket(bucket)

@@ -7,31 +7,33 @@ package ir.co.sadad.avatarapi.common.enums;
  * </pre>
  */
 public enum MaterialKey {
+    BACKGROUND,
     SHIRT,
-    shirt,
     HEAD,
-    head,
     LIP,
-    lip,
     NOSE,
-    nose,
-    BEARD,
-    beard,
     EYE,
-    eye,
     EYEBROW,
-    eyebrow,
-    eybrow,
+    BEARD,
+
     MAN_HAIR,
-    man_hair,
     WOMAN_HAIR,
-    woman_hair,
     AVATAR_SCARF,
-    avatar_scarf,
     HAT,
-    hat,
-    EYEGALSS,
-    eyeglass
+    /**
+     * this is used in get materials
+     * <pre>
+     *     this key for ui shows group that contain :
+     *     1 . Man_HAIR
+     *     2 . WOMAN_HAIR
+     *     3 . SCARF
+     *     4 . HAT
+     *     ATTENTION : this order is important .
+     *     REMEMBER -> this key is not store in DB , it must manipulate by code when get is called .
+     * </pre>
+     */
+    ACCESSORY,
+    EYEGLASS,
 
 
 }

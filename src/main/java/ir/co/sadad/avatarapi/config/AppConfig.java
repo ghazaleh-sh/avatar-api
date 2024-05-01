@@ -1,28 +1,16 @@
 package ir.co.sadad.avatarapi.config;
 
-import ir.co.sadad.avatarapi.common.exceptions.handlers.ReactiveExceptionHandler;
-import org.springframework.boot.autoconfigure.web.WebProperties;
-import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.web.codec.CodecCustomizer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.annotation.Order;
-import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
-import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
-import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
-import org.springframework.data.mongodb.gridfs.ReactiveGridFsTemplate;
-import org.springframework.http.codec.ServerCodecConfigurer;
+import org.springframework.http.codec.CodecConfigurer;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
-@EnableCaching
 public class AppConfig {
-
+    private static Integer MAX_MEMORY_SIZE = 50 * 1024 * 1024; // 50 MB
     /**
      * Add exceptions Message Source
      *
@@ -43,12 +31,14 @@ public class AppConfig {
         bean.setValidationMessageSource(messageSource());
         return bean;
     }
-
-
     @Bean
-    public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("configs");
+    public CodecCustomizer codecCustomizer() {
+       return new CodecCustomizer() {
+           @Override
+           public void customize(CodecConfigurer configurer) {
+               configurer.defaultCodecs().maxInMemorySize(MAX_MEMORY_SIZE);
+           }
+       };
     }
-
 
 }

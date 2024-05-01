@@ -1,10 +1,9 @@
 package ir.co.sadad.avatarapi.services;
 
-import ir.co.sadad.avatarapi.dtos.DefaultAvatarRequestDto;
-import ir.co.sadad.avatarapi.dtos.DefaultAvatarResponseDto;
+import ir.co.sadad.avatarapi.common.enums.MaterialKey;
+import ir.co.sadad.avatarapi.dtos.StickerDto;
 import ir.co.sadad.avatarapi.dtos.MaterialRequestDto;
 import ir.co.sadad.avatarapi.dtos.MaterialsResponseDto;
-import org.springframework.core.io.InputStreamResource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,11 +18,24 @@ public interface MaterialService {
 
     /**
      * service for save materials in batch form
+     * <pre>
+     *     this service changes during develop :
+     *     there is no service for update , this service will delete everything and then recreate.
+     * </pre>
      *
      * @param materialRequestDtoFlux list of materials
-     * @return nothing will return
+     * @return if everything goes well return true
      */
-    Mono<Boolean> saveMaterials(MaterialRequestDto materialRequestDtoFlux);
+    Mono<Boolean> saveMaterials(MaterialRequestDto materialRequestDtoFlux, String ssn);
+
+    /**
+     * service for save file for PWA , it is new service and can be crete in Material Service
+     *
+     * @param file file
+     * @param ssn  of admin
+     * @return is uploaded ?
+     */
+    Mono<Boolean> savePWAMaterialFile(String ssn, String file);
 
     /**
      * get all material of avatars
@@ -33,36 +45,43 @@ public interface MaterialService {
     Flux<MaterialsResponseDto> getAllMaterial();
 
     /**
+     * get all material for panel services
+     *
+     * @return list of material for panel
+     */
+    Flux<MaterialsResponseDto> getPanelMaterial();
+
+    /**
+     * get material based on id
+     *
+     * @param ssn ssn of user for check authorization
+     * @param id  id of material
+     * @return material
+     */
+    Mono<MaterialsResponseDto> getMaterial(String ssn, String id);
+
+    /**
      * get material file from MinIO server
      *
-     * @param bucketName
      * @param fileName
      */
-    Mono<InputStreamResource> getMaterialFile(String bucketName, String fileName);
+    Mono<byte[]> getMaterialFile(String fileName);
 
-
-    /**
-     * service for save defaultAvatar in batch form
-     *
-     * @param defaultAvatarRequestDtoFlux list of defaultAvatars
-     * @return nothing will return
-     */
-    Mono<Boolean> saveDefaultAvatars(DefaultAvatarRequestDto defaultAvatarRequestDtoFlux);
+    Mono<byte[]> getPanelMaterialFile(String fileName);
 
     /**
-     * get all default avatars formula
+     * service for get formula ,
+     * <pre>
+     *     this service will return formula based on col , row and key
+     *     used for change input to general input
+     * </pre>
      *
-     * @return list of default avatar formula
+     * @param row         row in PWA - mostly enum of key
+     * @param col         col in PWA - mostly order
+     * @param materialKey key
+     * @return fomula
      */
-    Flux<DefaultAvatarResponseDto> getDefaultAvatars();
-
-    /**
-     * get default avatar file
-     *
-     * @param fileName name of default avatar
-     * @return file
-     */
-    Mono<InputStreamResource> getDefaultAvatarFile(String fileName);
+    StickerDto getFormula(Integer row, Integer col, MaterialKey materialKey);
 
 
 }

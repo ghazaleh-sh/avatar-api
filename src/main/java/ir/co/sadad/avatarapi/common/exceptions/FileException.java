@@ -2,7 +2,7 @@ package ir.co.sadad.avatarapi.common.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class FileException extends BaseException{
+public final class FileException extends BaseException{
 
 
     public FileException(String message) {

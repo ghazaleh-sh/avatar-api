@@ -3,37 +3,36 @@ package ir.co.sadad.avatarapi.mappers;
 import ir.co.sadad.avatarapi.common.enums.MaterialKey;
 import ir.co.sadad.avatarapi.dtos.*;
 import ir.co.sadad.avatarapi.models.DefaultAvatar;
-import ir.co.sadad.avatarapi.models.Formula;
-import ir.co.sadad.avatarapi.models.Item;
 import ir.co.sadad.avatarapi.models.Material;
+import ir.co.sadad.avatarapi.models.Sticker;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import org.springframework.data.mongodb.core.mapping.TextScore;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MaterialMapperTest {
     private final MaterialMapper materialMapper = Mappers.getMapper(MaterialMapper.class);
+    private final DefaultAvatarMapper defaultAvatarMapper = Mappers.getMapper(DefaultAvatarMapper.class);
 
     @Test
     public void shouldConvertToMaterialDto() {
-        Item item = new Item();
+        Sticker item = new Sticker();
         item.setId("123");
-        item.setKey(MaterialKey.EYEGALSS);
-        item.setOrder(1);
+        item.setKey(MaterialKey.EYEGLASS);
+        item.setPriority(1);
         item.setFileName("fileName");
-        List<Item> itemList = new ArrayList<>();
+        List<Sticker> itemList = new ArrayList<>();
         itemList.add(item);
         Material given = new Material();
         given.setId("1234");
-        given.setOrder(1);
+        given.setPriority(1);
         given.setPriority(1);
         given.setItems(itemList);
-        given.setIsRequire("true");
-        given.setKey(MaterialKey.EYEGALSS);
+        given.setIsRequire(true);
+        given.setKey(MaterialKey.EYEGLASS);
 
         //when
         MaterialsResponseDto result = materialMapper.toDto(given);
@@ -46,18 +45,18 @@ class MaterialMapperTest {
 
     @Test
     public void shouldConvertToMaterialModel() {
-        ItemDto item = new ItemDto();
-        item.setKey(MaterialKey.EYEGALSS);
-        item.setOrder(1);
+        StickerDto item = new StickerDto();
+        item.setKey(MaterialKey.EYEGLASS);
+        item.setPriority(1);
         item.setFileName("fileName");
-        List<ItemDto> itemList = new ArrayList<>();
+        List<StickerDto> itemList = new ArrayList<>();
         itemList.add(item);
         MaterialRequestDto given = new MaterialRequestDto();
-        given.setOrder(1);
+        given.setPriority(1);
         given.setPriority(1);
         given.setItems(itemList);
-        given.setIsRequire("true");
-        given.setKey(MaterialKey.EYEGALSS);
+        given.setIsRequire(true);
+        given.setKey(MaterialKey.EYEGLASS);
 
         //when
         Material result = materialMapper.toModel(given);
@@ -72,23 +71,23 @@ class MaterialMapperTest {
         DefaultAvatar given = new DefaultAvatar();
         given.setId("123");
         given.setName("name");
-        Formula formula1 = new Formula();
-        formula1.setFileName("fileName1");
-        formula1.setKey(MaterialKey.EYE);
-        formula1.setId("1234");
-        formula1.setPriority(1);
-        Formula formula2 = new Formula();
-        formula2.setFileName("fileName2");
-        formula2.setKey(MaterialKey.EYEBROW);
-        formula2.setId("1235");
-        formula2.setPriority(2);
-        List<Formula> stickers = new ArrayList<>();
-        stickers.add(formula1);
-        stickers.add(formula2);
+        Sticker sticker1 = new Sticker();
+        sticker1.setFileName("fileName1");
+        sticker1.setKey(MaterialKey.EYE);
+        sticker1.setId("1234");
+        sticker1.setPriority(1);
+        Sticker sticker2 = new Sticker();
+        sticker2.setFileName("fileName2");
+        sticker2.setKey(MaterialKey.EYEBROW);
+        sticker2.setId("1235");
+        sticker2.setPriority(2);
+        List<Sticker> stickers = new ArrayList<>();
+        stickers.add(sticker1);
+        stickers.add(sticker2);
         given.setStickers(stickers);
 
 
-        DefaultAvatarResponseDto result = materialMapper.toDefaultAvatarDto(given);
+        DefaultAvatarResponseDto result = defaultAvatarMapper.toDefaultAvatarDto(given);
 
         assertEquals(result.getStickers().size(), given.getStickers().size());
         assertEquals(result.getId(), given.getId());
@@ -98,23 +97,23 @@ class MaterialMapperTest {
     public void shouldConvertToDefaultAvatarModel() {
         DefaultAvatarRequestDto given = new DefaultAvatarRequestDto();
         given.setName("name");
-        FormulaDto formula1 = new FormulaDto();
+        StickerDto formula1 = new StickerDto();
         formula1.setFileName("fileName1");
         formula1.setKey(MaterialKey.EYE);
         formula1.setId("1234");
         formula1.setPriority(1);
-        FormulaDto formula2 = new FormulaDto();
+        StickerDto formula2 = new StickerDto();
         formula2.setFileName("fileName2");
         formula2.setKey(MaterialKey.EYEBROW);
         formula2.setId("1235");
         formula2.setPriority(2);
-        List<FormulaDto> stickers = new ArrayList<>();
+        List<StickerDto> stickers = new ArrayList<>();
         stickers.add(formula1);
         stickers.add(formula2);
         given.setStickers(stickers);
 
 
-        DefaultAvatar result = materialMapper.toDefaultAvatarModel(given);
+        DefaultAvatar result = defaultAvatarMapper.toDefaultAvatarModel(given);
 
         assertEquals(result.getStickers().size(), given.getStickers().size());
         assertEquals(result.getName(), given.getName());

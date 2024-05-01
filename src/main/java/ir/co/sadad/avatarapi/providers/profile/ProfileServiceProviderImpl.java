@@ -19,7 +19,7 @@ public class ProfileServiceProviderImpl implements ProfileServiceProvider {
 
     private final WebClient webClient;
 
-    @Value(value = "${profile.url}")
+    @Value("${profile.url}")
     private String profileUrl;
 
 

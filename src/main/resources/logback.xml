@@ -12,7 +12,7 @@
 
     <appender name="RollingFile"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/psp-payment.log</file>
+        <file>${LOG_DIR}/avatar-api.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1} [%t] %m%n</Pattern>
         </encoder>
@@ -20,7 +20,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- rollover daily and when the file reaches 10 MegaBytes -->
             <fileNamePattern>
-                ${LOG_DIR}/%d{yyyy-MM-dd}/phk-%i.log
+                ${LOG_DIR}/%d{yyyy-MM-dd}/av-%i.log
             </fileNamePattern>
             <maxFileSize>200MB</maxFileSize>
             <maxHistory>50</maxHistory>
@@ -36,7 +36,7 @@
 <!--        <writeTimeout>1 minute</writeTimeout>-->
 <!--    </appender>-->
 
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RollingFile"/>
 <!--        <appender-ref ref="logstash"/>-->

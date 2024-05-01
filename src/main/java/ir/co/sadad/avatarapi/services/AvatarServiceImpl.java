@@ -15,10 +15,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Base64;
@@ -62,7 +67,7 @@ public class AvatarServiceImpl implements AvatarService {
                 userAvatarRepository.deleteBySsn(userAvatar.getSsn())
                         .then(userAvatarPhotoRepository.deleteBySsn(userAvatar.getSsn())
                                 .then(userAvatarRepository.insert(mapper.toModel(userAvatar)))
-                                .then(Mono.just(Base64Utils.decodeFromString(userAvatar.getImage()))
+                                .then(Mono.just(Base64.getDecoder().decode(userAvatar.getImage()))
                                         .map(bytes -> {
                                             return UserAvatarPhoto.builder()
                                                     .ssn(userAvatar.getSsn())
@@ -77,7 +82,7 @@ public class AvatarServiceImpl implements AvatarService {
     @Override
     public Mono<UserAvatarDto> getUserAvatar(String ssn) {
         return userAvatarRepository.findBySsn(ssn)
-                .switchIfEmpty(Mono.error(new GeneralException("AA.GA.NOT.FOUND.USER.001")))
+                .switchIfEmpty(Mono.error(new GeneralException("AA.GA.NOT.FOUND.USER.001", HttpStatus.NOT_FOUND)))
                 .map(mapper::toDto);
     }
 
@@ -92,21 +97,32 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Mono<ProfileDto> getProfile(String token) {
-        return profileServiceProvider.getProfile(token).map(profileMapper::toDto);
+        return profileServiceProvider.getProfile(token).map(item -> profileMapper.toDto(item.getResultSet().getInnerResponse()));
     }
 
     @Override
-    public Mono<String> getProfileImage(String ssn, String token) {
-        return userAvatarPhotoRepository.findBySsn(ssn)
-                .map(res -> Base64.getEncoder().encodeToString(res.getImage().getData()))
-                .switchIfEmpty(Mono.defer(() -> profileServiceProvider
-                        .getProfile(token)
-                        .map(profileResponseDto -> profileResponseDto
-                                .getResultSet()
-                                .getInnerResponse()
-                                .getCustomerPhoto()
-                                .getPhoto())));
+    public Mono<Void> getProfileImage(String ssn,
+                                      String token,
+                                      String fileName, ServerWebExchange exchange) {
 
+       return  userAvatarPhotoRepository.findBySsn(ssn)
+                .flatMap(photoEntity -> {
+                    byte[] bytes = photoEntity.getImage().getData();
+                    DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
+                    exchange.getResponse().getHeaders().set(HttpHeaders.CONTENT_DISPOSITION,ssn+fileName);
+                    exchange.getResponse().getHeaders().set(HttpHeaders.CONTENT_TYPE,"image/*");
+                    return exchange.getResponse().writeWith(Flux.just(buffer));
+                })
+                .switchIfEmpty(Mono.defer(() ->
+                        profileServiceProvider.getProfile(token)
+                                 .flatMap(profileResponseDto -> {
+                                     byte[] bytes = Converter.convertTo(profileResponseDto.getResultSet().getInnerResponse().getCustomerPhoto().getPhoto());
+                                             DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
+                                     exchange.getResponse().getHeaders().set(HttpHeaders.CONTENT_DISPOSITION,fileName);
+                                     exchange.getResponse().getHeaders().set(HttpHeaders.CONTENT_TYPE,"image/*");
+                                     return exchange.getResponse().writeWith(Flux.just(buffer));
+                                 })
+                ));
     }
 
 
